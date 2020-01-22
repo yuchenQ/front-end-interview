@@ -21,6 +21,6 @@ module.exports = {
     'func-names': 'off',
     'no-new-wrappers': 'off',
     'no-return-assign': 'off',
-    'no-prototype-builtins': 'off'
+    'no-prototype-builtins': 'off',
   },
 };
