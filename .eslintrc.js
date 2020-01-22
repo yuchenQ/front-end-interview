@@ -15,5 +15,12 @@ module.exports = {
   },
   rules: {
     'prettier/prettier': 'error',
+    'import/prefer-default-export': 'off',
+    'no-plusplus': 'off',
+    'no-param-reassign': 'off',
+    'func-names': 'off',
+    'no-new-wrappers': 'off',
+    'no-return-assign': 'off',
+    'no-prototype-builtins': 'off'
   },
 };
