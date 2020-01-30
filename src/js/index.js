@@ -6,6 +6,7 @@ import {
   distinctBySet,
   distinctByObject,
 } from './remove_duplicate_array';
+import { compose, pipe } from './compose';
 
 const duplicated = [1, 2, 2, 3, 3];
 
@@ -32,3 +33,16 @@ const mutatedDuplicated = [
 ];
 
 console.log('distinctByObject', distinctByObject(mutatedDuplicated));
+
+const funcA = a => {
+  console.log('funcA is called');
+  return a - 1;
+};
+
+const funcB = b => {
+  console.log('funcB is called');
+  return b * 2;
+};
+
+console.log('compose', compose(funcA, funcB)(2));
+console.log('pipe', pipe(funcA, funcB)(2));
