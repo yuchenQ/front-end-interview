@@ -90,3 +90,88 @@ counter.decrement(); // 1
 
 1. 由于闭包会是的函数中的变量都被保存到内存中,滥用闭包很容易造成内存消耗过大,导致网页性能问题。解决方法是在退出函数之前，将不再使用的局部变量全部删除。
 2. 闭包可以使得函数内部的值可以在函数外部进行修改。如果你把父函数当作对象（object）使用，把闭包当作它的公用方法（Public Method），把内部变量当作它的私有属性（private value），这时一定要小心，不要随便改变父函数内部变量的值
+
+## 2. for...in 和 for...of 的区别
+
+1. for...of 是 ES6 新引入的特性，修复了 ES5 引入的 for...in 的不足
+2. for...in 循环出的是 key，for...of 循环出的是 value
+3. for...of 不能循环普通的对象，需要通过和 Object.keys()搭配使用
+4. 推荐在循环对象属性的时候，使用 for...in,在遍历数组的时候的时候使用 for...of
+
+## 3. new 一个对象, 这个过程中发生了什么
+
+1. 创建一个新对象，如：var obj = {};
+2. 新对象的*proto*属性指向构造函数的原型对象。
+3. 将构造函数的作用域赋值给新对象。（也所以 this 对象指向新对象）
+4. 执行构造函数内部的代码，将属性添加给 obj 中的 this 对象。
+5. 返回新对象 obj
+
+## 4. js 的防抖和节流是什么
+
+**防抖**: 在事件被触发 n 秒后再执行回调，如果在这 n 秒内又被触发，则重新计时
+
+```js
+function debounce(fn, wait) {
+  var timeout = null;
+
+  return function() {
+    if (timeout !== null) clearTimeout(timeout);
+    timeout = setTimeout(fn, wait);
+  };
+}
+// 处理函数
+function handle() {
+  console.log(Math.random());
+}
+//滚动事件
+window.addEventListener('scroll', debounce(handle, 2000));
+```
+
+**节流**: 就是指连续触发事件但是在 n 秒中只执行一次函数。节流会稀释函数的执行频率
+
+```js
+function throttle(func, delay) {
+  var prev = Date.now();
+
+  return function() {
+    var context = this;
+    var args = arguments;
+
+    var now = Date.now();
+
+    if (now - prev >= delay) {
+      func.apply(context, args);
+      prev = Date.now();
+    }
+  };
+}
+
+function handle() {
+  console.log(Math.random());
+}
+window.addEventListener('scroll', throttle(handle, 2000));
+```
+
+**区别：**
+函数节流不管事件触发有多频繁，都会保证在规定时间内一定会执行一次真正的事件处理函数，而函数防抖只是在最后一次事件后才触发一次函数。 比如在页面的无限加载场景下，我们需要用户在滚动页面时，每隔一段时间发一次 Ajax 请求，而不是在用户停下滚动页面操作时才去请求数据。这样的场景，就适合用节流技术来实现
+
+## 5. js 中 call,apply,bind 之间的关系
+
+### bind,apply,call 三者都可以用来改变 this 的指向
+
+### apply 和 call
+
+- 二者都是 Function 对象的方法, 每个函数都能调用
+- 二者的第一个参数都是你要指定的执行上下文
+- apply 和 call 的区别是: call 方法接受的是若干个参数列表，而 apply 接收的是一个包含多个参数的数组。
+
+### bind 与 apply、call 区别
+
+我们发现 bind()方法还需要调用一次; 是由于 bind()方法创建一个新的函数,我们必须手动去调用
+
+### 总结 bind, apply, call 的共同和不同点
+
+- 三者都可以用来改变 this 的指向
+- 三者第一个参数都是 this 要指向的对象，也就是想指定的上下文，上下文就是指调用函数的那个对象。（点前的那个对象，没有就是全局 window）
+- 三者都可以传参，但是 apply 是数组，而 call 是有顺序的传入
+- bind 是返回对应函数，便于稍后调用；apply 、call 则是立即执行
