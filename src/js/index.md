@@ -8,40 +8,40 @@
 
 ### 稍全面的回答
 
-1. 在js中变量的作用域属于函数作用域, 在函数执行完后,作用域就会被清理,内存也会随之被回收；
+1. 在 js 中变量的作用域属于函数作用域, 在函数执行完后,作用域就会被清理,内存也会随之被回收；
 2. 但是由于闭包函数是建立在函数内部的子函数, 由于其可访问上级作用域,即使上级函数执行完, 作用域也不会随之销毁；
 3. 这时的子函数(也就是闭包),便拥有了访问上级作用域中变量的权限,即使上级函数执行完后作用域内的值也不会被销毁。
 
 ### 这里涉及到对函数作用域的认识
 
-+ js变量分为: 全局变量和局部变量;
-+ 函数内部可以直接读取全局变量,而在函数外部自然无法读取函数内的局部变量
+- js 变量分为: 全局变量和局部变量;
+- 函数内部可以直接读取全局变量,而在函数外部自然无法读取函数内的局部变量
 
 ### 闭包解决了什么问题
 
-+ 可以读取函数内部的变量
-+ 让这些变量的值始终保持在内存中。不会在函数调用后被清除
+- 可以读取函数内部的变量
+- 让这些变量的值始终保持在内存中。不会在函数调用后被清除
 
 ### 例子
 
 ```js
 function addCounter() {
-   let counter = 0
-   const myFunction = function () {
-     counter = counter + 1
-     return counter
-   }
-   return myFunction
- }
- const increment = addCounter()
- const c1 = increment()
- const c2 = increment()
- const c3 = increment()
- console.log('increment:', c1, c2, c3);
- // increment: 1 2 3
+  let counter = 0;
+  const myFunction = function() {
+    counter = counter + 1;
+    return counter;
+  };
+  return myFunction;
+}
+const increment = addCounter();
+const c1 = increment();
+const c2 = increment();
+const c3 = increment();
+console.log('increment:', c1, c2, c3);
+// increment: 1 2 3
 ```
 
-在这段代码中increment实际上就是闭包函数myFunction, 它一共运行了三次，第一次的值是1，第二次的值是2，第三次的值是3。这证明了，函数addCounter中的局部变量counter一直保存在内存中，并没有在addCounter调用后被自动清除
+在这段代码中 increment 实际上就是闭包函数 myFunction, 它一共运行了三次，第一次的值是 1，第二次的值是 2，第三次的值是 3。这证明了，函数 addCounter 中的局部变量 counter 一直保存在内存中，并没有在 addCounter 调用后被自动清除
 
 ### 闭包的应用
 
