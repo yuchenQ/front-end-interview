@@ -46,3 +46,12 @@ const funcB = b => {
 
 console.log('compose', compose(funcA, funcB)(2));
 console.log('pipe', pipe(funcA, funcB)(2));
+
+// Application of closure
+for (let i = 0; i < 10; i++) {
+  (j => {
+    setTimeout(function() {
+      console.log(j); // 1-10
+    }, 1000);
+  })(i);
+}
