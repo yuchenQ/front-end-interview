@@ -1,3 +1,4 @@
+// https://www.hackerrank.com/challenges/ctci-array-left-rotation/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=arrays
 // 拆分法：[1,2,3] 移动一次，是 [2,3].concat([1]), 以此类推
 export function rotLeft(a, d) {
   if (d > a.length) d %= a.length;
