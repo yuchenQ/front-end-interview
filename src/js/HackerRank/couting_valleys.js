@@ -5,7 +5,7 @@ export function countingValleys(n, s) {
   let currentLevel = 0;
 
   return arrayOfSteps.reduce(function(sum, step) {
-    currentLevel = step === 'U' ? currentLevel++ : currentLevel--;
+    currentLevel += { U: 1, D: -1 }[step];
 
     if (step === 'U' && currentLevel === 0) {
       sum += 1;
