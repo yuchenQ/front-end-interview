@@ -133,3 +133,25 @@
 - Visibility: 与 opacity 唯一不同的是它不会响应任何用户交互。此外，元素在读屏软件中也会被隐藏;
 - Display: display 设为 none 任何对该元素直接打用户交互操作都不可能生效。此外，读屏软件也不会读到元素的内容。这种方式产生的效果就像元素完全不存在;
 - Position: 不会影响布局，能让元素保持可以操作;
+
+### 4. What is the difference between '+' and '~' sibling selectors
+
+#### The General Sibling Selector ~ selects all elements that are siblings of a specified element
+
+The following example selects all `<p>` elements that are siblings of `<div>` elements:
+
+```css
+div ~ p {
+  background-color: blue;
+}
+```
+
+#### The Adjacent Sibling Selector + selects all elements that are the adjacent siblings of a specified element
+
+The following example will select all `<p>` elements that are placed immediately after `<div>` elements:
+
+```css
+div + p {
+  background-color: red;
+}
+```
