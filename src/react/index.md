@@ -1,6 +1,6 @@
 # React 高频问题 & 解答
 
-## 2020/20/13
+## 2020/2/13
 
 ### 1. 什么是 CSR（客户端渲染），SSR（服务端渲染），isomorphic/universal（同构）
 
@@ -96,3 +96,17 @@ React 的异步请求到底应该放在哪个生命周期里,有人认为在 com
 - React 只会匹配相同 class 的 component（这里面的 class 指的是组件的名字）
 - 合并操作，调用 component 的 setState 方法的时候, React 将其标记为 dirty.到每一个事件循环结束, React 检查所有标记 dirty 的 component 重新绘制
 - 选择性子树渲染。开发人员可以重写 shouldComponentUpdate 提高 diff 的性能
+
+## 2020/2/18
+
+### Context 的问题
+
+> All consumers that are descendants of a Provider will re-render whenever the Provider’s value prop changes. The propagation from Provider to its descendant consumers (including .contextType and useContext) is not subject to the shouldComponentUpdate method, so the consumer is updated even when an ancestor component skips an update.
+
+从 Provider 到下属 consumer 的数据传递不受 shouldComponentUpdate 方法的约束，因此，即使上层组件跳过更新，Consumer 也会被更新
+
+### ReactDOM.createPortal(child, container)
+
+1. 首先简单的介绍下 react 中的插槽（Portals），通过 ReactDOM.createPortal(child, container)创建，是 ReactDOM 提供的接口，可以实现将子节点渲染到父组件 DOM 层次结构之外的 DOM 节点。
+2. 第一个参数（child）是任何可渲染的 React 子元素，例如一个元素，字符串或 片段(fragment)。第二个参数（container）则是一个 DOM 元素。
+3. 对于 portal 的一个典型用例是当父组件有 overflow: hidden 或 z-index 样式，但你需要子组件能够在视觉上 “跳出(break out)” 其容器。例如，对话框、hovercards 以及提示框。所以一般 react 组件里的模态框，就是这样实现的

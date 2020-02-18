@@ -177,3 +177,67 @@ window.addEventListener('scroll', throttle(handle, 2000));
 - 三者第一个参数都是 this 要指向的对象，也就是想指定的上下文，上下文就是指调用函数的那个对象。（点前的那个对象，没有就是全局 window）
 - 三者都可以传参，但是 apply 是数组，而 call 是有顺序的传入
 - bind 是返回对应函数，便于稍后调用；apply 、call 则是立即执行
+
+## 2020/2/18
+
+### 表达式和语句有什么区别？如何把语句转换为表达式
+
+- 简单的说来，表达式(Expression)是语句(Statement)的子集，表达式一定会返回一个值，而语句不会。
+- 比如定义变量、返回语句都属于语句，而逻辑判断、方法调用、赋值都属于表达式。
+- 支持语句的地方都支持表达式，而只支持表达式的地方不支持语句
+
+可以使用**IIFE**将语句转为表达式
+
+```js
+const foo = (() => {
+  return 'foo';
+})();
+```
+
+### js 判断一个 object 对象是否为空
+
+#### 1.最常见的思路，for...in... 遍历属性，为真则为“非空数组”；否则为“空数组”
+
+```js
+for (var i in obj) {
+  // 如果不为空，则会执行到这一步，返回true
+  return true;
+}
+return false; // 如果为空,返回false
+```
+
+#### 2.通过 JSON 自带的 stringify() 方法来判断
+
+JSON.stringify() 方法用于将 JavaScript 值转换为 JSON 字符串。
+
+```js
+if (JSON.stringify(data) === '{}') {
+  return false; // 如果为空,返回false
+}
+return true; // 如果不为空，则会执行到这一步，返回true
+```
+
+这里需要注意为什么不用 toString()，因为它返回的不是我们需要的。
+
+```js
+var a = {};
+a.toString(); // "[object Object]"
+```
+
+#### 3.ES6 新增的方法 Object.keys()
+
+Object.keys() 方法会返回一个由一个给定对象的自身可枚举属性组成的数组。如果我们的对象为空，他会返回一个空数组，如下：
+
+```js
+var a = {};
+Object.keys(a); // []
+```
+
+我们可以依靠 Object.keys()这个方法通过判断它的长度来知道它是否为空。
+
+```js
+if (Object.keys(object).length === 0) {
+  return false; // 如果为空,返回false
+}
+return true; // 如果不为空，则会执行到这一步，返回true
+```
