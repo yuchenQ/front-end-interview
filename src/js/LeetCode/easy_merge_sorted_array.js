@@ -1,3 +1,4 @@
+/* eslint-disable no-continue */
 // https://github.com/azl397985856/leetcode/blob/master/problems/88.merge-sorted-array.md
 
 export const mergeBrutal = function(nums1, m, nums2, n) {

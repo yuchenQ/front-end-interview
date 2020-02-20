@@ -1,5 +1,5 @@
 // https://github.com/azl397985856/leetcode/blob/master/problems/26.remove-duplicates-from-sorted-array.md
-
+// 遇见不一样的，更新ref，遇见一样的，删掉
 export function removeDuplicates(nums) {
   let ref = nums[0];
 
@@ -21,7 +21,7 @@ export function removeDuplicates(nums) {
 使用快慢指针来记录遍历的坐标:
 - 开始时这两个指针都指向第一个数字
 - 如果两个指针指的数字相同，则快指针向前走一步
-- 如果不同，则两个指针都向前走一步
+- 如果不同，则两个指针都向前走一步，把慢指针的值设为不一样的那个新值
 - 当快指针走完整个数组后，慢指针当前的坐标加1(index + 1)就是数组中不同数字的个数
 */
 export function removeDuplicatesTwoP(nums) {
