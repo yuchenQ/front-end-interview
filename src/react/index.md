@@ -53,20 +53,7 @@ SPA 首次加载的 HTML 文档没有内容，而目前大多数搜索引擎主�
 - 在 HTML 中，表单元素通常维护自己的状态，并根据用户输入进行更新。当用户提交表单时，来自上述元素的值将随表单一起发送。
 - 而 React 的工作方式则不同。包含表单的组件将跟踪其状态中的输入值，并在每次回调函数(例如 onChange)触发时重新渲染组件，因为状态被更新。以这种方式由 React 控制其值的输入表单元素称为受控组件
 
-### 3. React 的请求应该放在哪个生命周期中
-
-React 的异步请求到底应该放在哪个生命周期里,有人认为在 componentWillMount 中可以提前进行异步请求,避免白屏,其实这个观点是有问题的.
-
-由于 JavaScript 中异步事件的性质，当您启动 API 调用时，浏览器会在此期间返回执行其他工作。当 React 渲染一个组件时，它不会等待 componentWillMount 它完成任何事情 - React 继续前进并继续 render,没有办法“暂停”渲染以等待数据到达。
-
-而且在 componentWillMount 请求会有一系列潜在的问题:
-
-- 在服务器渲染时,如果在 componentWillMount 里获取数据，fetch data 会执行两次，一次在服务端一次在客户端，这造成了多余的请求
-- 在 React 16 进行 React Fiber 重写后, componentWillMount 可能在一次渲染中多次调用.
-
-目前官方推荐的异步请求是在 componentDidMount 中进行.
-
-### 4. redux 的工作流程
+### 3. redux 的工作流程
 
 #### 首先，我们看下几个核心概念
 
@@ -148,3 +135,73 @@ React 的异步请求到底应该放在哪个生命周期里,有人认为在 com
 - **跨层级通信**: Context 设计目的是为了共享那些对于一个组件树而言是“全局”的数据，例如当前认证的用户、主题或首选语言, 对于跨越多层的全局数据通过 Context 通信再适合不过
 - **发布订阅模式**: 发布者发布事件，订阅者监听事件并做出反应,我们可以通过引入 event 模块进行通信
 - **全局状态管理工具**: 借助 Redux 或者 Mobx 等全局状态管理工具进行通信,这种工具会维护一个全局状态中心 Store,并根据不同的事件产生新的状态
+
+## 2020/2/21
+
+### 1. 当你调用 setState 的时候，发生了什么事
+
+将传递给 setState 的对象合并到组件的当前状态，这将启动一个 reconciliation 的过程
+
+#### i. reconciliation
+
+1. props or states 改变
+2. render 函数返回不同的元素树
+3. 新旧虚拟 DOM 对比（diff）
+4. 针对差异的地方更新
+5. 渲染为真实的 DOM 树
+
+利用 shouldComponentUpdate 这个生命周期函数，在保证应该更新的节点能够得到更新的前提下，减少不必要 diff 的过程
+
+#### ii. shouldComponentUpdate
+
+默认的 shouldComponentUpdate 会在 props 或 state 发生变化(浅比较)时返回 true, 表示组件会重新渲染，从而调用 render 函数，进行新旧 DOM 树的 diff 比对。但是我们可以在这个生命周期函数里面做一些判断，然后返回一个布尔值，并且返回 true 表示即将更新当前组件，false 则不更新当前组件。换句话说，我们可以通过 shouldComponentUpdate 控制是否发生 VDOM 树的 diff 过程
+
+#### iii. React 虚拟 DOM 的 Diff 原理全解析
+
+![avatar](./../assets/react_diff_process.png)
+
+#### 设计思想概述
+
+1. 永远只比较同层节点，不会跨层级比较节点。
+2. 不同的两个节点产生不同的树。这也就是上面总结的类型不相同的情况，把原来的节点以及它的后代全部干掉，替换成新的。
+3. 通过 key 值指定哪些元素是相同的。
+
+#### 元素类型相同时
+
+**a. 都是 DOM 节点**
+
+```html
+<div className="old" title="老节点" />
+
+<div className="new" title="新节点" />
+```
+
+通过比对这两个元素，React 知道需要修改 DOM 元素上的 className 属性和 title 属性。
+
+处理完该节点后，React 继续对子节点进行递归。
+
+**b. 都是组件元素**
+
+组件实例保持不变，更新 props。值得注意的是，这时候调用组件实例的 componentWillReceiveProps () 方法。然后通过 shouldComponentUpdate 返回值决定是否调用 render 方法。
+
+处理完该节点后，依然继续对子节点进行递归。
+
+#### key 选取的原一般是: 不需要全局唯一，但必须列表中保持唯一
+
+### 2. React 优势 || 为什么使用 React
+
+- **React 速度很快**：它并不直接对 DOM 进行操作，引入了一个叫做虚拟 DOM 的概念，安插在 javascript 逻辑和实际的 DOM 之间，性能好。
+
+- **跨浏览器兼容**：虚拟 DOM 帮助我们解决了跨浏览器问题，它为我们提供了标准化的 API，甚至在 IE8 中都是没问题的。
+
+- **一切都是 component**：代码更加模块化，重用代码更容易，可维护性高。
+
+- **单向数据流**：Flux 是一个用于在 JavaScript 应用中创建单向数据层的架构，它随着 React 视图库的开发而被 Facebook 概念化。
+
+- **同构、纯粹的 javascript**：因为搜索引擎的爬虫程序依赖的是服务端响应而不是 JavaScript 的执行，预渲染你的应用有助于搜索引擎优化。
+
+- **兼容性好**：比如使用 RequireJS 来加载和打包，而 Browserify 和 Webpack 适用于构建大型应用。它们使得那些艰难的任务不再让人望而生畏
+
+### 3. React Ajax 请求 应该放在哪个生命周期中
+
+在 React 组件中，应该在 componentDidMount 中发起网络请求。这个方法会在组件第一次“挂载”(被添加到 DOM)时执行，在组件的生命周期中仅会执行一次。更重要的是，你不能保证在组件挂载之前 Ajax 请求已经完成，如果是这样，也就意味着你将尝试在一个未挂载的组件上调用 setState，这将不起作用。在 componentDidMount 中发起网络请求将保证这有一个组件可以更新了。
