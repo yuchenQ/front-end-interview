@@ -7,6 +7,8 @@
 - [JS](./src/js/index.md)
 - [REACT](./src/react/index.md)
 - [NETWORK](./src/network/index.md)
+- [GIT](./src/others/git.md)
+- [SECURITY](./src/others/security.md)
 
 ## Important
 
