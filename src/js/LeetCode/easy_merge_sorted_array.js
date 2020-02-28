@@ -6,7 +6,7 @@ export const mergeBrutal = function(nums1, m, nums2, n) {
 
   let current2 = 0;
 
-  for (let i = nums1.length - 1; i >= nums1.length - n; i--) {
+  for (let i = nums1.length - 1; i > nums1.length - 1 - n; i--) {
     nums1[i] = nums2[current2++];
   }
 

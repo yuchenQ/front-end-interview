@@ -1,4 +1,5 @@
 // https://github.com/azl397985856/leetcode/blob/master/problems/121.best-time-to-buy-and-sell-stock.md
+// 122. Best Time to Buy and Sell Stock
 /**
  * @param {number[]} prices
  * @return {number}
