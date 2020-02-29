@@ -157,9 +157,9 @@ window.addEventListener('scroll', throttle(handle, 2000));
 **区别：**
 函数节流不管事件触发有多频繁，都会保证在规定时间内一定会执行一次真正的事件处理函数，而函数防抖只是在最后一次事件后才触发一次函数。 比如在页面的无限加载场景下，我们需要用户在滚动页面时，每隔一段时间发一次 Ajax 请求，而不是在用户停下滚动页面操作时才去请求数据。这样的场景，就适合用节流技术来实现
 
-### 5. js 中 call,apply,bind 之间的关系
+### 5. js 中 call, apply, bind 之间的关系
 
-#### bind,apply,call 三者都可以用来改变 this 的指向
+#### bind, apply, call 三者都可以用来改变 this 的指向
 
 #### apply 和 call
 
