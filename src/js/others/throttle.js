@@ -9,6 +9,10 @@
  *                        - trailing为false时，表示最后停止触发后不执行
  * @return {Function} 返回经过节流处理后的函数
  */
+// 在{leading: true, trailing: true}下，为大多数正常需求所用。在这种情况下，
+// 条件①只有在第一次触发，以及后续超过规定间隔时间后的第一次触发，才会走到该流程下；其余都是在条件②下触发fn。
+// 在{leading: false}下，都是在条件②下触发fn，走不到条件①下的。
+// 在{trailing: false}下，都是在条件①下触发fn，走不到条件②下的。
 export function throttle(fn, wait = 500, option = {}) {
   let timerId = null; // 用于记录定时器的id
   let lastTime = 0; // 上次触发fn的时间戳
