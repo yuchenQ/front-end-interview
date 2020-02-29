@@ -31,3 +31,19 @@ export const singleNumber = function(nums) {
 
   return single;
 };
+
+export const singleNumberHash = function(nums) {
+  const numsObj = {};
+
+  for (let index = 0; index < nums.length; index++) {
+    const number = nums[index];
+
+    if (numsObj[number]) {
+      delete numsObj[number];
+    } else {
+      numsObj[number] = 1;
+    }
+  }
+
+  return Object.keys(numsObj)[0];
+};
