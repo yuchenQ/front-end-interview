@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+  <!--<![endif]-->
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title></title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+      }
+      .container {
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+      }
+      .img {
+        width: 300px;
+        height: 300px;
+      }
+      .pic {
+        width: 300px;
+        height: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <!--[if lt IE 7]>
+      <p class="browsehappy">
+        You are using an <strong>outdated</strong> browser. Please
+        <a href="#">upgrade your browser</a> to improve your experience.
+      </p>
+    <![endif]-->
+    <div class="container">
+      <p>
+        You are using an <strong>outdated</strong> browser. Please
+        <a href="#">upgrade your browser</a> to improve your experience.
+      </p>
+      <div class="img">
+        <img class="pic" src="" alt="" data-src="./portrait.jpg" />
+      </div>
+      <div class="img">
+        <img class="pic" src="" alt="" data-src="./portrait.jpg" />
+      </div>
+      <div class="img">
+        <img class="pic" src="" alt="" data-src="./portrait.jpg" />
+      </div>
+      <div class="img">
+        <img class="pic" src="" alt="" data-src="./portrait.jpg" />
+      </div>
+    </div>
+    <script>
+      // 获取所有图片的数组
+      const images = document.querySelectorAll('.container .pic');
+      // 获取父元素
+      const container = document.querySelector('.container');
+      // 获取可视区域高度
+      const viewHeight = window.innerHeight;
+      const load = lazyLoad();
+      // 首屏渲染
+      load();
+      function lazyLoad() {
+        // 运用闭包 count 进行计数 避免已显示的图片重复参与循环
+        let count = 0;
+        return () => {
+          for (let i = count; i < images.length; i++) {
+            // getBoundingClientRect()获取返回元素的大小及其相对于视口的位置
+            // 获取第i张图片是否在可视区域
+            let distance = viewHeight - images[i].getBoundingClientRect().top;
+            if (distance >= 0) {
+              // 图片在可视区域时设置图片的src 为 当前元素 data-src
+              images[i].src = images[i].getAttribute('data-src');
+              // 图片已被显示，下次从count + 1 张开始检查是否在可视区域
+              count += 1;
+            }
+          }
+        };
+      }
+      // 添加滚动事件触发加载
+      container.addEventListener('scroll', load, false);
+    </script>
+  </body>
+</html>
