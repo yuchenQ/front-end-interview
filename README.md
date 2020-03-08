@@ -1,5 +1,11 @@
 # Front-End-Interview
 
+## Outlines
+
+- [Front End](./src/interview/front_end.md)
+- [Back End](./src/interview/back_end.md)
+- [Methodology](./src/interview/methodology.md)
+
 ## Links
 
 - [HTML](./src/html/index.md)
