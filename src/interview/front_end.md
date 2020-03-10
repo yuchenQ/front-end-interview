@@ -8,13 +8,11 @@
 
 ### 3. SSR
 
-### 4. Reconciliation
+### 4. Reconciliation/ Diff
 
 ### 5. 生命周期
 
-### 7. 静态/ 动态 路由
-
-### 8. Flux & Redux pros and cons
+### 6. MVC & MVVM & Flux & Redux pros and cons
 
 ### 合成事件
 
